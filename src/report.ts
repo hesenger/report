@@ -1,7 +1,7 @@
 import { readContent, parseXml } from './tools';
 
 class Report {
-    file: string
+    private file: string
 
     constructor(file: string) {
         this.file = file;
