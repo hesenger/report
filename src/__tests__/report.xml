@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<report id="test-report" orientation="landscape" title="REPORT TITLE">
+    <detail>
+        <sql>
+            SELECT 'NAME' AS STRCOL, 12 AS INTCOL, CAST('20200101' AS DATE) AS DTECOL, 19.55 AS DCLCOL
+        </sql>
+        <group field="NAME">
+            <header>
+                <row>
+                    <text text="Name:" align="right" col-span="2" />
+                    <text field="NAME" align="left" col-span="10" />
+                </row>
+            </header>
+            <footer>
+                <row>
+                    <text col-span="10" />
+                    <int field="DCLCOL" col-span="2"/>
+                </row>
+            </footer>
+        </group>
+        <row>
+            <text field="NAME" col-span="3" />
+            <int field="INTCOL" />
+            <date field="DTECOL" col-span="1" header="Date" />
+            <decimal field="DCLCOL" />
+        </row>
+    </detail>
+
+</report>
