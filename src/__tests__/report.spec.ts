@@ -1,5 +1,6 @@
 import { rejects } from 'assert';
 import Report from '../report';
+import fs from 'fs';
 
 test('should fail on file not exist', async () => {
     expect.assertions(1);
@@ -20,4 +21,9 @@ test('should return parsed definition as object', async () => {
                 }
             }
         });
+});
+
+test('should pass', async () => {
+    const out = fs.createWriteStream('./dist/generate.pdf');
+    return expect(new Report(__dirname + '/report.xml').generate(out));
 });
