@@ -21,6 +21,7 @@
         <row>
             <text field="NAME" col-span="3" />
             <int field="INTCOL" />
+            <text field="NAME" col-span="3" />
             <date field="DTECOL" col-span="1" header="Date" />
             <decimal field="DCLCOL" />
         </row>
