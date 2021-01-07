@@ -23,9 +23,16 @@ test('should return parsed definition as object', async () => {
         });
 });
 
-test('should pass', async () => {
+test('should generate report', async () => {
     const out = fs.createWriteStream('./dist/generate.pdf');
     return expect(new Report(__dirname + '/report.xml').generate(out))
+        .resolves
+        .toBeTruthy();
+});
+
+test('should generate report portrait', async () => {
+    const out = fs.createWriteStream('./dist/generate-portrait.pdf');
+    return expect(new Report(__dirname + '/report-portrait.xml').generate(out))
         .resolves
         .toBeTruthy();
 });

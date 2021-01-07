@@ -1,5 +1,5 @@
 import PdfPrinter from 'pdfmake';
-import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Content, ContextPageSize, Margins, PageSize, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { readContent, parseXml } from './tools';
 
 interface DataDriver {
@@ -24,8 +24,11 @@ class Report {
         const content = {
             table: {
                 headerRows: detail.row.length,
-                body: new Array()
-            }
+                widths: detail.row[0].$$.map(() => '*'),
+                body: new Array(),
+            },
+
+            layout: 'noBorders'
         };
 
         // headers
@@ -41,19 +44,43 @@ class Report {
 
         // data
         data.forEach((obj: any) => {
+            detail.row.forEach((row: any) => {
+                const vals = new Array();
+                row.$$.forEach((col: any) => {
+                    const attrs = col.$;
+                    const val = attrs.field ? obj[attrs.field] : attrs.text;
+                    vals.push(val || '');
+                });
 
+                content.table.body.push(vals);
+            });
         });
 
-        console.log(content.table.body)
         return content;
     }
 
     async generate(stream: NodeJS.WritableStream, parameters?: any[]): Promise<boolean> {
         const rpt = (await this.parse()).report;
-        const def = { content: new Array() };
+        const def = {
+            pageSize: 'A4' as PageSize,
+            pageOrientation: rpt.$.orientation || 'portrait',
+            pageMargins: [30, 80, 30, 30] as Margins,
+            content: new Array(),
+            defaultStyle: {
+                font: 'Helvetica',
+                fontSize: 10
+            },
 
-        for (let i = 0; i < rpt.detail.length; i++) {
-            const dt = rpt.detail[i];
+            header: function(currentPage: number, pageCount: number, pageSize: ContextPageSize): Content {          
+                return [{ 
+                    text: 'simple text', 
+                    alignment: (currentPage % 2) ? 'left' : 'right' ,
+                    margin: 30
+                }];
+              }
+        };
+
+        for (const dt of rpt.detail) {
             const data = this.driver
                 ? await this.driver.load(dt, parameters)
                 : [{}];
@@ -62,12 +89,6 @@ class Report {
         }
 
         const fonts = {
-            Roboto: {
-                normal: 'Helvetica',
-                bold: 'Helvetica-Bold',
-                italics: 'Helvetica-Oblique',
-                bolditalics: 'Helvetica-BoldOblique'
-            },
             Helvetica: {
                 normal: 'Helvetica',
                 bold: 'Helvetica-Bold',

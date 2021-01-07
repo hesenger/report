@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<report id="test-report" orientation="landscape" title="REPORT TITLE">
+<report id="test-report" title="REPORT PORTRAIT">
     <detail>
         <sql>
             SELECT 'NAME' AS STRCOL, 12 AS INTCOL, CAST('20200101' AS DATE) AS DTECOL, 19.55 AS DCLCOL

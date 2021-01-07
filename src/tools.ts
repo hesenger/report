@@ -15,13 +15,13 @@ function readContent(file: string): Promise<string> {
 
 /**
  * Utility method to wrap XML parser with Promise to allow async work!
- * This method is intended to maintain some level segregation from XML 
+ * This method is intended to maintain some level segregation from XML
  * parser library.
  * @param content XML definition to be parsed
  */
 function parseXml(content: string): Promise<object> {
-    const parser = new xml2js.Parser({ 
-        explicitChildren: true, 
+    const parser = new xml2js.Parser({
+        explicitChildren: true,
         preserveChildrenOrder: true
     });
 
